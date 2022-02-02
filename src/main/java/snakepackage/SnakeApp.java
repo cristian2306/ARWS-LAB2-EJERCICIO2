@@ -37,6 +37,7 @@ public class SnakeApp {
     private static Board board;
     int nr_selected = 0;
     Thread[] thread = new Thread[MAX_THREADS];
+    private boolean start = false;
 
     public SnakeApp() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -62,7 +63,7 @@ public class SnakeApp {
 
     public static void main(String[] args) {
         app = new SnakeApp();
-        app.init();
+        //app.init();
     }
 
     private void init() {
@@ -97,8 +98,20 @@ public class SnakeApp {
         for (int i = 0; i != MAX_THREADS; i++) {
             System.out.println("["+i+"] :"+thread[i].getState());
         }
-        
-
+       
+    }
+    
+    private void resume(){
+        Snake.setPause(false);
+        for(Snake snak:snakes){
+            synchronized(snak.getBody()){
+                snak.notify();
+            }
+        }
+    }
+    
+    private void Pause(){
+        Snake.setPause(true);
     }
 
     public static SnakeApp getApp() {

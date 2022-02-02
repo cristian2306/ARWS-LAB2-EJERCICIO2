@@ -15,6 +15,7 @@ public class Snake extends Observable implements Runnable {
     private LinkedList<Cell> snakeBody = new LinkedList<Cell>();
     //private Cell objective = null;
     private Cell start = null;
+    private static boolean isPause = false;
 
     private boolean snakeEnd = false;
 
@@ -47,24 +48,30 @@ public class Snake extends Observable implements Runnable {
 
     @Override
     public void run() {
-        while (!snakeEnd) {
-            
-            snakeCalc();
+        
+        synchronized(snakeBody){
+            while (!snakeEnd) {
+                snakeCalc();
 
-            //NOTIFY CHANGES TO GUI
-            setChanged();
-            notifyObservers();
+                //NOTIFY CHANGES TO GUI
+                setChanged();
+                notifyObservers();
 
-            try {
-                if (hasTurbo == true) {
-                    Thread.sleep(500 / 3);
-                } else {
-                    Thread.sleep(500);
+                try {
+                    if (hasTurbo == true) {
+                        Thread.sleep(500 / 3);
+                    } else {
+                        Thread.sleep(500);
+                    }
+                    
+                    if(isPause){
+                        snakeBody.wait();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
+            }
         }
         
         fixDirection(head);
@@ -342,5 +349,7 @@ public class Snake extends Observable implements Runnable {
     public int getIdt() {
         return idt;
     }
-
+    
+    public static void setPause(boolean pause){Snake.isPause = pause;}
+    
 }
