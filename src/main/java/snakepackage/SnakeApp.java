@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -41,6 +42,9 @@ public class SnakeApp {
     private boolean startGame = false;
     private boolean pauseGame = false;
     
+    private int WrongSnake = 0;
+    private int BestSnake = 0;
+    
     
     private JButton startButton = new JButton("Start");
     private JButton pauseButton = new JButton("Pause");
@@ -52,6 +56,7 @@ public class SnakeApp {
 
     public SnakeApp() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        
         frame = new JFrame("The Snake Race");
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,6 +91,14 @@ public class SnakeApp {
                 if(!pauseGame){
                     Pause();
                 }
+                WrongBestSnake();
+                String lineSep = System.lineSeparator();
+                StringBuilder result = new StringBuilder();
+                result.append("Best and Wrong Snakes").append(lineSep).append(lineSep);
+                result.append("Best Snake: ").append(Integer.toString(BestSnake)).append(lineSep);
+                result.append("Wrong Snake: ").append(Integer.toString(WrongSnake));
+                JOptionPane.showMessageDialog(null, result.toString());
+                
             }
         });
         resumeButton.addActionListener(new ActionListener(){
@@ -96,12 +109,19 @@ public class SnakeApp {
                 }
             }
         });
-        
-        
-        
-        
 
     }
+    
+    public void WrongBestSnake(){
+        int size = 0 ;
+        for(Snake snake:snakes){
+            if(snake.getBody().size() > size){
+                size = snake.getBody().size();
+                BestSnake = snake.getIdt();
+            }
+        }
+    }
+    
 
     public static void main(String[] args) {
         app = new SnakeApp();
@@ -132,6 +152,9 @@ public class SnakeApp {
             for (int i = 0; i != MAX_THREADS; i++) {
                 if (snakes[i].isSnakeEnd() == true) {
                     x++;
+                    if(x == 1){
+                        WrongSnake = snakes[i].getIdt();
+                    }
                 }
             }
             if (x == MAX_THREADS) {
