@@ -1,3 +1,14 @@
 PARTE III
 
 2. 
+	- Condiciones Carrera
+		El movimiento de la serpiente.
+		Al obtener algun poder, habilidad (comida, potenciador, teletransportador)
+	- Uso inadecuado de colecciones
+		Una coleccion inadecuada es la lista enlazada que representa el cuerpo de la serpiente
+	- Uso innecesario de esperas activas
+		...
+		
+3.
+	- Regiones criticas
+		Para resolver el movimiento de la serpiente, se sincroniza la funcion de snakeCalc(), con el objeto snakeBody.

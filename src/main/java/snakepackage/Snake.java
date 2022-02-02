@@ -16,6 +16,7 @@ public class Snake extends Observable implements Runnable {
     //private Cell objective = null;
     private Cell start = null;
     private static boolean isPause = false;
+    private static boolean isStart = false;
 
     private boolean snakeEnd = false;
 
@@ -63,14 +64,13 @@ public class Snake extends Observable implements Runnable {
                     } else {
                         Thread.sleep(500);
                     }
-                    
+
                     if(isPause){
                         snakeBody.wait();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }
         
@@ -349,6 +349,16 @@ public class Snake extends Observable implements Runnable {
     public int getIdt() {
         return idt;
     }
+
+    public static boolean getIsStart() {
+        return isStart;
+    }
+
+    public static void setIsStart(boolean isStart) {
+        Snake.isStart = isStart;
+    }
+    
+    
     
     public static void setPause(boolean pause){Snake.isPause = pause;}
     
